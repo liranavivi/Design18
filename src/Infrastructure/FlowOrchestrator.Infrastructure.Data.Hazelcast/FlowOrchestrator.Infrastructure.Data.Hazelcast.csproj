@@ -4,6 +4,19 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Description>Hazelcast integration for in-memory data grid in the FlowOrchestrator system</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Hazelcast.Net" Version="5.5.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\FlowOrchestrator.Abstractions\FlowOrchestrator.Abstractions.csproj" />
+  </ItemGroup>
 
 </Project>

@@ -1,6 +1,199 @@
 @FlowOrchestrator.ConfigurationManager_HostAddress = http://localhost:5115
 
-GET {{FlowOrchestrator.ConfigurationManager_HostAddress}}/weatherforecast/
+### Get all configuration entries
+GET {{FlowOrchestrator.ConfigurationManager_HostAddress}}/api/Configuration
 Accept: application/json
 
-###
+### Get a configuration entry by ID
+GET {{FlowOrchestrator.ConfigurationManager_HostAddress}}/api/Configuration/config-id
+Accept: application/json
+
+### Get configuration entries by scope
+GET {{FlowOrchestrator.ConfigurationManager_HostAddress}}/api/Configuration/scope/System
+Accept: application/json
+
+### Get configuration entries by target ID
+GET {{FlowOrchestrator.ConfigurationManager_HostAddress}}/api/Configuration/target/FILE-IMPORTER-001
+Accept: application/json
+
+### Get configuration entries by environment
+GET {{FlowOrchestrator.ConfigurationManager_HostAddress}}/api/Configuration/environment/Development
+Accept: application/json
+
+### Create a new configuration entry
+POST {{FlowOrchestrator.ConfigurationManager_HostAddress}}/api/Configuration
+Content-Type: application/json
+
+{
+  "name": "FileImporter001Config",
+  "description": "Configuration for File Importer 001",
+  "version": "1.0.0",
+  "scope": "Service",
+  "targetId": "FILE-IMPORTER-001",
+  "environment": "Development",
+  "values": {
+    "basePath": "C:\\Data\\Import",
+    "filePattern": "*.csv",
+    "recursive": true,
+    "encoding": "utf-8",
+    "bufferSize": 4096
+  }
+}
+
+### Update a configuration entry
+PUT {{FlowOrchestrator.ConfigurationManager_HostAddress}}/api/Configuration/config-id
+Content-Type: application/json
+
+{
+  "name": "FileImporter001Config",
+  "description": "Updated configuration for File Importer 001",
+  "version": "1.0.1",
+  "scope": "Service",
+  "targetId": "FILE-IMPORTER-001",
+  "environment": "Development",
+  "values": {
+    "basePath": "C:\\Data\\Import",
+    "filePattern": "*.csv",
+    "recursive": true,
+    "encoding": "utf-8",
+    "bufferSize": 8192
+  }
+}
+
+### Delete a configuration entry
+DELETE {{FlowOrchestrator.ConfigurationManager_HostAddress}}/api/Configuration/config-id
+
+### Activate a configuration entry
+POST {{FlowOrchestrator.ConfigurationManager_HostAddress}}/api/Configuration/config-id/activate
+
+### Deactivate a configuration entry
+POST {{FlowOrchestrator.ConfigurationManager_HostAddress}}/api/Configuration/config-id/deactivate
+
+### Get all configuration schemas
+GET {{FlowOrchestrator.ConfigurationManager_HostAddress}}/api/Schema
+Accept: application/json
+
+### Get a configuration schema by ID
+GET {{FlowOrchestrator.ConfigurationManager_HostAddress}}/api/Schema/schema-id
+Accept: application/json
+
+### Create a new configuration schema
+POST {{FlowOrchestrator.ConfigurationManager_HostAddress}}/api/Schema
+Content-Type: application/json
+
+{
+  "name": "FileImporterConfiguration",
+  "description": "Schema for file importer configuration",
+  "version": "1.0.0",
+  "parameters": [
+    {
+      "name": "basePath",
+      "description": "Base path for file operations",
+      "type": "String",
+      "required": true
+    },
+    {
+      "name": "filePattern",
+      "description": "Pattern for matching files",
+      "type": "String",
+      "required": true,
+      "defaultValue": "*.*"
+    },
+    {
+      "name": "recursive",
+      "description": "Whether to search subdirectories",
+      "type": "Boolean",
+      "required": false,
+      "defaultValue": false
+    },
+    {
+      "name": "encoding",
+      "description": "File encoding",
+      "type": "String",
+      "required": false,
+      "defaultValue": "utf-8"
+    },
+    {
+      "name": "bufferSize",
+      "description": "Buffer size for file operations",
+      "type": "Number",
+      "required": false,
+      "defaultValue": 4096,
+      "minimum": 1024,
+      "maximum": 65536
+    }
+  ]
+}
+
+### Update a configuration schema
+PUT {{FlowOrchestrator.ConfigurationManager_HostAddress}}/api/Schema/schema-id
+Content-Type: application/json
+
+{
+  "name": "FileImporterConfiguration",
+  "description": "Updated schema for file importer configuration",
+  "version": "1.0.1",
+  "parameters": [
+    {
+      "name": "basePath",
+      "description": "Base path for file operations",
+      "type": "String",
+      "required": true
+    },
+    {
+      "name": "filePattern",
+      "description": "Pattern for matching files",
+      "type": "String",
+      "required": true,
+      "defaultValue": "*.*"
+    },
+    {
+      "name": "recursive",
+      "description": "Whether to search subdirectories",
+      "type": "Boolean",
+      "required": false,
+      "defaultValue": false
+    },
+    {
+      "name": "encoding",
+      "description": "File encoding",
+      "type": "String",
+      "required": false,
+      "defaultValue": "utf-8"
+    },
+    {
+      "name": "bufferSize",
+      "description": "Buffer size for file operations",
+      "type": "Number",
+      "required": false,
+      "defaultValue": 4096,
+      "minimum": 1024,
+      "maximum": 65536
+    },
+    {
+      "name": "skipHeaderRow",
+      "description": "Whether to skip the header row",
+      "type": "Boolean",
+      "required": false,
+      "defaultValue": false
+    }
+  ]
+}
+
+### Delete a configuration schema
+DELETE {{FlowOrchestrator.ConfigurationManager_HostAddress}}/api/Schema/schema-id
+
+### Validate configuration values against a schema
+POST {{FlowOrchestrator.ConfigurationManager_HostAddress}}/api/Schema/validate
+Content-Type: application/json
+
+{
+  "schemaId": "schema-id",
+  "values": {
+    "basePath": "C:\\Data\\Import",
+    "filePattern": "*.csv",
+    "recursive": true,
+    "encoding": "utf-8",
+    "bufferSize": 8192
+  }
+}

@@ -119,5 +119,14 @@ namespace FlowOrchestrator.Abstractions.Common
         {
             return GetEnumerator();
         }
+
+        /// <summary>
+        /// Gets all parameters as a dictionary.
+        /// </summary>
+        /// <returns>A dictionary containing all parameters.</returns>
+        public Dictionary<string, object> GetAllParameters()
+        {
+            return new Dictionary<string, object>(Parameters);
+        }
     }
 }

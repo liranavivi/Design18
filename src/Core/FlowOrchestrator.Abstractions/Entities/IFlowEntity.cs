@@ -1,9 +1,11 @@
+using FlowOrchestrator.Abstractions.Services;
+
 namespace FlowOrchestrator.Abstractions.Entities
 {
     /// <summary>
     /// Defines the interface for flow entities in the FlowOrchestrator system.
     /// </summary>
-    public interface IFlowEntity : IEntity
+    public interface IFlowEntity : IEntity, IService
     {
         /// <summary>
         /// Gets or sets the flow identifier.

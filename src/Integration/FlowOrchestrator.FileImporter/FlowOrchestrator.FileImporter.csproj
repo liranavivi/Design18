@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\FlowOrchestrator.Abstractions\FlowOrchestrator.Abstractions.csproj" />
     <ProjectReference Include="..\..\Core\FlowOrchestrator.Common\FlowOrchestrator.Common.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\FlowOrchestrator.Infrastructure.Telemetry.OpenTelemetry\FlowOrchestrator.Infrastructure.Telemetry.OpenTelemetry.csproj" />
     <ProjectReference Include="..\FlowOrchestrator.ImporterBase\FlowOrchestrator.ImporterBase.csproj" />
     <ProjectReference Include="..\FlowOrchestrator.ProtocolAdapters\FlowOrchestrator.ProtocolAdapters.csproj" />
   </ItemGroup>

@@ -14,6 +14,9 @@ namespace FlowOrchestrator.Domain.Entities
         public FlowEntity()
         {
             // Default constructor
+            ServiceId = string.Empty;
+            ServiceType = "FLOW";
+            Version = "1.0.0";
         }
 
         /// <summary>
@@ -23,6 +26,9 @@ namespace FlowOrchestrator.Domain.Entities
         public FlowEntity(string flowId)
         {
             FlowId = flowId;
+            ServiceId = flowId;
+            ServiceType = "FLOW";
+            Version = "1.0.0";
         }
 
         /// <summary>
@@ -34,6 +40,9 @@ namespace FlowOrchestrator.Domain.Entities
         {
             FlowId = flowId;
             Name = name;
+            ServiceId = flowId;
+            ServiceType = "FLOW";
+            Version = "1.0.0";
         }
 
         /// <summary>

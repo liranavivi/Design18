@@ -216,7 +216,7 @@ namespace FlowOrchestrator.Management.Services
             try
             {
                 // Convert the service ID to string
-                string serviceIdStr = serviceId.ToString() ?? string.Empty;
+                string serviceIdStr = serviceId?.ToString() ?? string.Empty;
 
                 // Check if the service exists
                 if (!_registry.TryGetValue(serviceIdStr, out var serviceVersions))

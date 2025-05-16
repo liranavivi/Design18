@@ -5,9 +5,23 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>dotnet-FlowOrchestrator.TaskScheduler-6d75b523-6f8e-4e69-aae7-3a42c0741725</UserSecretsId>
+    <RootNamespace>FlowOrchestrator.Management.Scheduling</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MassTransit" Version="8.4.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.3" />
+    <PackageReference Include="Quartz" Version="3.8.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\FlowOrchestrator.Abstractions\FlowOrchestrator.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Core\FlowOrchestrator.Domain\FlowOrchestrator.Domain.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\FlowOrchestrator.Infrastructure.Messaging.MassTransit\FlowOrchestrator.Infrastructure.Messaging.MassTransit.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\FlowOrchestrator.Infrastructure.Scheduling.Quartz\FlowOrchestrator.Infrastructure.Scheduling.Quartz.csproj" />
+    <ProjectReference Include="..\..\Integration\FlowOrchestrator.ImporterBase\FlowOrchestrator.ImporterBase.csproj" />
   </ItemGroup>
 </Project>

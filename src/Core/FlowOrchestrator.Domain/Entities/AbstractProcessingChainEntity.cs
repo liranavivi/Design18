@@ -1,4 +1,6 @@
 using FlowOrchestrator.Abstractions.Common;
+using FlowOrchestrator.Abstractions.Entities;
+using FlowOrchestrator.Abstractions.Services;
 
 namespace FlowOrchestrator.Domain.Entities
 {
@@ -6,7 +8,7 @@ namespace FlowOrchestrator.Domain.Entities
     /// Base abstract implementation for processing chain entities.
     /// Represents a directed acyclic graph of processor services that defines data transformation logic.
     /// </summary>
-    public abstract class AbstractProcessingChainEntity : AbstractEntity
+    public abstract class AbstractProcessingChainEntity : AbstractEntity, IProcessingChainEntity
     {
         /// <summary>
         /// Gets or sets the processing chain identifier.
@@ -57,6 +59,62 @@ namespace FlowOrchestrator.Domain.Entities
         /// Gets or sets the processing chain structure.
         /// </summary>
         public ProcessingChainStructure Structure { get; set; } = new ProcessingChainStructure();
+
+        /// <summary>
+        /// Gets or sets the service identifier.
+        /// </summary>
+        public string ServiceId { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the service type.
+        /// </summary>
+        public string ServiceType { get; set; } = "PROCESSING_CHAIN";
+
+        /// <summary>
+        /// Gets or sets the service version.
+        /// </summary>
+        public new string Version { get; set; } = "1.0.0";
+
+        /// <summary>
+        /// Gets or sets the version description.
+        /// </summary>
+        public new string VersionDescription { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the previous version identifier.
+        /// </summary>
+        public new string PreviousVersionId { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the version status.
+        /// </summary>
+        public new VersionStatus VersionStatus { get; set; } = VersionStatus.DRAFT;
+
+        /// <summary>
+        /// Initializes the service with the specified configuration parameters.
+        /// </summary>
+        /// <param name="parameters">The configuration parameters.</param>
+        public void Initialize(ConfigurationParameters parameters)
+        {
+            // No initialization needed for this entity
+        }
+
+        /// <summary>
+        /// Terminates the service.
+        /// </summary>
+        public void Terminate()
+        {
+            // No termination needed for this entity
+        }
+
+        /// <summary>
+        /// Gets the service state.
+        /// </summary>
+        /// <returns>The service state.</returns>
+        public ServiceState GetState()
+        {
+            return ServiceState.READY;
+        }
 
         /// <summary>
         /// Gets the entity identifier.
@@ -263,7 +321,7 @@ namespace FlowOrchestrator.Domain.Entities
                 chainEntity.Configuration = new Dictionary<string, object>(Configuration);
                 chainEntity.Metadata = new Dictionary<string, object>(Metadata);
                 chainEntity.IsEnabled = IsEnabled;
-                
+
                 // Deep copy of the processing chain structure
                 chainEntity.Structure = new ProcessingChainStructure
                 {
@@ -274,7 +332,7 @@ namespace FlowOrchestrator.Domain.Entities
                         Configuration = new Dictionary<string, object>(n.Configuration),
                         Metadata = new Dictionary<string, object>(n.Metadata)
                     }).ToList(),
-                    
+
                     Connections = Structure.Connections.Select(c => new ProcessorConnection
                     {
                         ConnectionId = c.ConnectionId,

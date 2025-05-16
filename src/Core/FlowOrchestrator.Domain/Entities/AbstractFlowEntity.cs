@@ -1,5 +1,6 @@
 using FlowOrchestrator.Abstractions.Common;
 using FlowOrchestrator.Abstractions.Entities;
+using FlowOrchestrator.Abstractions.Services;
 
 namespace FlowOrchestrator.Domain.Entities
 {
@@ -68,6 +69,42 @@ namespace FlowOrchestrator.Domain.Entities
         /// Gets or sets the flow structure.
         /// </summary>
         public FlowStructure Structure { get; set; } = new FlowStructure();
+
+        /// <summary>
+        /// Gets or sets the service identifier.
+        /// </summary>
+        public string ServiceId { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the service type.
+        /// </summary>
+        public string ServiceType { get; set; } = "FLOW";
+
+        /// <summary>
+        /// Initializes the service with the specified configuration parameters.
+        /// </summary>
+        /// <param name="parameters">The configuration parameters.</param>
+        public void Initialize(ConfigurationParameters parameters)
+        {
+            // No initialization needed for this entity
+        }
+
+        /// <summary>
+        /// Terminates the service.
+        /// </summary>
+        public void Terminate()
+        {
+            // No termination needed for this entity
+        }
+
+        /// <summary>
+        /// Gets the service state.
+        /// </summary>
+        /// <returns>The service state.</returns>
+        public ServiceState GetState()
+        {
+            return ServiceState.READY;
+        }
 
         /// <summary>
         /// Gets the entity identifier.
@@ -229,7 +266,7 @@ namespace FlowOrchestrator.Domain.Entities
                 flowEntity.Configuration = new Dictionary<string, object>(Configuration);
                 flowEntity.Metadata = new Dictionary<string, object>(Metadata);
                 flowEntity.IsEnabled = IsEnabled;
-                
+
                 // Deep copy of the flow structure
                 flowEntity.Structure = new FlowStructure
                 {
@@ -241,7 +278,7 @@ namespace FlowOrchestrator.Domain.Entities
                         Configuration = new Dictionary<string, object>(n.Configuration),
                         Metadata = new Dictionary<string, object>(n.Metadata)
                     }).ToList(),
-                    
+
                     Connections = Structure.Connections.Select(c => new FlowConnection
                     {
                         ConnectionId = c.ConnectionId,

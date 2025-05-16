@@ -1,5 +1,6 @@
 using FlowOrchestrator.Abstractions.Common;
 using FlowOrchestrator.Abstractions.Services;
+using FlowOrchestrator.Infrastructure.Telemetry.OpenTelemetry.Logging;
 using FlowOrchestrator.Integration.Importers.File;
 using FlowOrchestrator.Integration.Importers.File.Utilities;
 
@@ -11,8 +12,9 @@ namespace FlowOrchestrator.FileImporter
     public class Worker : BackgroundService
     {
         private readonly ILogger<Worker> _logger;
-        private readonly FileImporterService _fileImporterService;
+        private readonly FileImporterServiceWithTelemetry _fileImporterService;
         private readonly IConfiguration _configuration;
+        private readonly LoggingService _loggingService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Worker"/> class.
@@ -22,12 +24,14 @@ namespace FlowOrchestrator.FileImporter
         /// <param name="configuration">The configuration.</param>
         public Worker(
             ILogger<Worker> logger,
-            FileImporterService fileImporterService,
-            IConfiguration configuration)
+            FileImporterServiceWithTelemetry fileImporterService,
+            IConfiguration configuration,
+            LoggingService loggingService)
         {
             _logger = logger;
             _fileImporterService = fileImporterService;
             _configuration = configuration;
+            _loggingService = loggingService;
         }
 
         /// <summary>
@@ -37,7 +41,7 @@ namespace FlowOrchestrator.FileImporter
         /// <returns>A task representing the asynchronous operation.</returns>
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("FileImporter worker service starting at: {time}", DateTimeOffset.Now);
+            _loggingService.LogInformation("FileImporter worker service starting at: {Time}", DateTimeOffset.Now);
 
             try
             {
@@ -45,12 +49,12 @@ namespace FlowOrchestrator.FileImporter
                 var configParams = LoadConfiguration();
                 _fileImporterService.Initialize(configParams);
 
-                _logger.LogInformation("FileImporter service initialized successfully");
+                _loggingService.LogInformation("FileImporter service initialized successfully");
 
                 // Main service loop
                 while (!stoppingToken.IsCancellationRequested)
                 {
-                    _logger.LogDebug("FileImporter worker running at: {time}", DateTimeOffset.Now);
+                    _loggingService.LogDebug("FileImporter worker running at: {Time}", DateTimeOffset.Now);
 
                     // In a real implementation, this would listen for import commands
                     // from a message queue or other source. For now, we'll just wait.
@@ -60,14 +64,14 @@ namespace FlowOrchestrator.FileImporter
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error in FileImporter worker service: {ErrorMessage}", ex.Message);
+                _loggingService.LogError(ex, "Error in FileImporter worker service: {ErrorMessage}", ex.Message);
                 throw;
             }
             finally
             {
                 // Terminate the file importer service
                 _fileImporterService.Terminate();
-                _logger.LogInformation("FileImporter service terminated");
+                _loggingService.LogInformation("FileImporter service terminated");
             }
         }
 

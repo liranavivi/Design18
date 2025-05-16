@@ -109,6 +109,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowOrchestrator.Performanc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowOrchestrator.Reliability.Tests", "tests\System\FlowOrchestrator.Reliability.Tests\FlowOrchestrator.Reliability.Tests.csproj", "{1DB7D143-84E5-4409-A6A7-4B2A994B3703}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "srcRecoveryFlowOrchestrator.Recovery", "srcRecoveryFlowOrchestrator.Recovery", "{DD31FA1D-A3E1-66E2-70A5-2E4B63B671C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowOrchestrator.Recovery", "srcRecoveryFlowOrchestrator.Recovery\FlowOrchestrator.Recovery.csproj", "{516FED22-B456-42BF-A400-F0284DD1C695}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -611,6 +615,18 @@ Global
 		{1DB7D143-84E5-4409-A6A7-4B2A994B3703}.Release|x64.Build.0 = Release|Any CPU
 		{1DB7D143-84E5-4409-A6A7-4B2A994B3703}.Release|x86.ActiveCfg = Release|Any CPU
 		{1DB7D143-84E5-4409-A6A7-4B2A994B3703}.Release|x86.Build.0 = Release|Any CPU
+		{516FED22-B456-42BF-A400-F0284DD1C695}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{516FED22-B456-42BF-A400-F0284DD1C695}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{516FED22-B456-42BF-A400-F0284DD1C695}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{516FED22-B456-42BF-A400-F0284DD1C695}.Debug|x64.Build.0 = Debug|Any CPU
+		{516FED22-B456-42BF-A400-F0284DD1C695}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{516FED22-B456-42BF-A400-F0284DD1C695}.Debug|x86.Build.0 = Debug|Any CPU
+		{516FED22-B456-42BF-A400-F0284DD1C695}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{516FED22-B456-42BF-A400-F0284DD1C695}.Release|Any CPU.Build.0 = Release|Any CPU
+		{516FED22-B456-42BF-A400-F0284DD1C695}.Release|x64.ActiveCfg = Release|Any CPU
+		{516FED22-B456-42BF-A400-F0284DD1C695}.Release|x64.Build.0 = Release|Any CPU
+		{516FED22-B456-42BF-A400-F0284DD1C695}.Release|x86.ActiveCfg = Release|Any CPU
+		{516FED22-B456-42BF-A400-F0284DD1C695}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -667,5 +683,6 @@ Global
 		{5B18A7B3-EE82-4E5C-BF9C-88872A44AA91} = {9D368350-D5FC-0BD6-FE3A-1E370CD05A39}
 		{1C7A17A7-E42F-4A4E-9297-E227B87BCF90} = {9D368350-D5FC-0BD6-FE3A-1E370CD05A39}
 		{1DB7D143-84E5-4409-A6A7-4B2A994B3703} = {9D368350-D5FC-0BD6-FE3A-1E370CD05A39}
+		{516FED22-B456-42BF-A400-F0284DD1C695} = {DD31FA1D-A3E1-66E2-70A5-2E4B63B671C4}
 	EndGlobalSection
 EndGlobal

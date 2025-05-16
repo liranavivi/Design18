@@ -1,8 +1,10 @@
 using FlowOrchestrator.Abstractions.Common;
 using FlowOrchestrator.Abstractions.Entities;
 using FlowOrchestrator.Abstractions.Services;
+using FlowOrchestrator.Infrastructure.Data.MongoDB.Extensions;
 using FlowOrchestrator.Management.Services;
 using MassTransit;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 
@@ -43,16 +45,23 @@ builder.Services.AddMassTransit(x =>
     });
 });
 
+// Add MongoDB services
+builder.Services.AddMongoDb(builder.Configuration);
+
+// Add health checks
+builder.Services.AddHealthChecks()
+    .AddMongoDbHealthCheck();
+
 // Register service managers
-builder.Services.AddSingleton<ImporterServiceManager>();
-builder.Services.AddSingleton<ProcessorServiceManager>();
-builder.Services.AddSingleton<ExporterServiceManager>();
-builder.Services.AddSingleton<SourceEntityManager>();
-builder.Services.AddSingleton<DestinationEntityManager>();
-builder.Services.AddSingleton<SourceAssignmentEntityManager>();
-builder.Services.AddSingleton<DestinationAssignmentEntityManager>();
-builder.Services.AddSingleton<TaskSchedulerEntityManager>();
-builder.Services.AddSingleton<ScheduledFlowEntityManager>();
+builder.Services.AddScoped<ImporterServiceManager>();
+builder.Services.AddScoped<ProcessorServiceManager>();
+builder.Services.AddScoped<ExporterServiceManager>();
+builder.Services.AddScoped<SourceEntityManager>();
+builder.Services.AddScoped<DestinationEntityManager>();
+builder.Services.AddScoped<SourceAssignmentEntityManager>();
+builder.Services.AddScoped<DestinationAssignmentEntityManager>();
+builder.Services.AddScoped<TaskSchedulerEntityManager>();
+builder.Services.AddScoped<ScheduledFlowEntityManager>();
 
 // Initialize service managers with default configuration
 builder.Services.AddHostedService<ServiceManagerInitializer>();
@@ -72,6 +81,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+app.MapHealthChecks("/health");
 
 app.Run();
 
@@ -139,6 +149,7 @@ public class ServiceManagerInitializer : BackgroundService
             _logger.LogError(ex, "Failed to initialize service managers");
         }
 
+        // Return a completed task since we don't have any async operations
         return Task.CompletedTask;
     }
 }

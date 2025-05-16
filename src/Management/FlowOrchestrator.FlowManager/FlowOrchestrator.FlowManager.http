@@ -1,6 +1,135 @@
 @FlowOrchestrator.FlowManager_HostAddress = http://localhost:5219
 
-GET {{FlowOrchestrator.FlowManager_HostAddress}}/weatherforecast/
+### Get all flows
+GET {{FlowOrchestrator.FlowManager_HostAddress}}/api/FlowEntity
 Accept: application/json
 
-###
+### Get a specific flow
+GET {{FlowOrchestrator.FlowManager_HostAddress}}/api/FlowEntity/flow-001
+Accept: application/json
+
+### Register a new flow
+POST {{FlowOrchestrator.FlowManager_HostAddress}}/api/FlowEntity
+Content-Type: application/json
+
+{
+  "flowId": "flow-001",
+  "name": "Sample Flow",
+  "description": "A sample flow for demonstration purposes",
+  "owner": "admin",
+  "tags": ["sample", "demo"],
+  "importerServiceId": "file-importer-001",
+  "processorServiceIds": ["json-processor-001"],
+  "exporterServiceIds": ["file-exporter-001"],
+  "configuration": {
+    "maxRetries": 3,
+    "timeout": 30000
+  },
+  "metadata": {
+    "createdBy": "admin",
+    "environment": "development"
+  },
+  "isEnabled": true,
+  "structure": {
+    "nodes": [
+      {
+        "nodeId": "importer-1",
+        "nodeType": "IMPORTER",
+        "serviceId": "file-importer-001",
+        "configuration": {
+          "path": "/data/input"
+        },
+        "metadata": {}
+      },
+      {
+        "nodeId": "processor-1",
+        "nodeType": "PROCESSOR",
+        "serviceId": "json-processor-001",
+        "configuration": {
+          "transformationRules": "customer-transform-rules"
+        },
+        "metadata": {}
+      },
+      {
+        "nodeId": "exporter-1",
+        "nodeType": "EXPORTER",
+        "serviceId": "file-exporter-001",
+        "configuration": {
+          "path": "/data/output"
+        },
+        "metadata": {}
+      }
+    ],
+    "connections": [
+      {
+        "connectionId": "conn-1",
+        "sourceNodeId": "importer-1",
+        "targetNodeId": "processor-1",
+        "configuration": {},
+        "metadata": {}
+      },
+      {
+        "connectionId": "conn-2",
+        "sourceNodeId": "processor-1",
+        "targetNodeId": "exporter-1",
+        "configuration": {},
+        "metadata": {}
+      }
+    ]
+  },
+  "serviceId": "flow-001",
+  "serviceType": "FLOW",
+  "version": "1.0.0",
+  "versionDescription": "Initial version"
+}
+
+### Validate a flow
+GET {{FlowOrchestrator.FlowManager_HostAddress}}/api/FlowEntity/flow-001/validate
+Accept: application/json
+
+### Create a new version of a flow
+POST {{FlowOrchestrator.FlowManager_HostAddress}}/api/FlowEntity/flow-001/versions
+Content-Type: application/json
+
+{
+  "description": "Updated flow with additional processor"
+}
+
+### Get all processing chains
+GET {{FlowOrchestrator.FlowManager_HostAddress}}/api/ProcessingChain
+Accept: application/json
+
+### Get a specific processing chain
+GET {{FlowOrchestrator.FlowManager_HostAddress}}/api/ProcessingChain/chain-001
+Accept: application/json
+
+### Register a new processing chain
+POST {{FlowOrchestrator.FlowManager_HostAddress}}/api/ProcessingChain
+Content-Type: application/json
+
+{
+  "chainId": "chain-001",
+  "name": "Sample Processing Chain",
+  "description": "A sample processing chain for demonstration purposes",
+  "processorServiceIds": ["json-processor-001", "validation-processor-001"],
+  "configuration": {
+    "maxRetries": 3,
+    "timeout": 30000
+  },
+  "metadata": {
+    "createdBy": "admin",
+    "environment": "development"
+  },
+  "serviceId": "chain-001",
+  "serviceType": "PROCESSING_CHAIN",
+  "version": "1.0.0",
+  "versionDescription": "Initial version"
+}
+
+### Create a new version of a processing chain
+POST {{FlowOrchestrator.FlowManager_HostAddress}}/api/ProcessingChain/chain-001/versions
+Content-Type: application/json
+
+{
+  "description": "Updated processing chain with additional processor"
+}

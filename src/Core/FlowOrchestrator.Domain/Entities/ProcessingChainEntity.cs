@@ -1,4 +1,5 @@
 using FlowOrchestrator.Abstractions.Common;
+using FlowOrchestrator.Abstractions.Services;
 
 namespace FlowOrchestrator.Domain.Entities
 {
@@ -6,7 +7,7 @@ namespace FlowOrchestrator.Domain.Entities
     /// Concrete implementation of the AbstractProcessingChainEntity class.
     /// Represents a directed acyclic graph of processor services that defines data transformation logic.
     /// </summary>
-    public class ProcessingChainEntity : AbstractProcessingChainEntity
+    public class ProcessingChainEntity : AbstractProcessingChainEntity, IService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ProcessingChainEntity"/> class.
@@ -14,6 +15,9 @@ namespace FlowOrchestrator.Domain.Entities
         public ProcessingChainEntity()
         {
             // Default constructor
+            ServiceId = string.Empty;
+            ServiceType = "PROCESSING_CHAIN";
+            Version = "1.0.0";
         }
 
         /// <summary>
@@ -23,6 +27,9 @@ namespace FlowOrchestrator.Domain.Entities
         public ProcessingChainEntity(string chainId)
         {
             ChainId = chainId;
+            ServiceId = chainId;
+            ServiceType = "PROCESSING_CHAIN";
+            Version = "1.0.0";
         }
 
         /// <summary>
@@ -34,6 +41,9 @@ namespace FlowOrchestrator.Domain.Entities
         {
             ChainId = chainId;
             Name = name;
+            ServiceId = chainId;
+            ServiceType = "PROCESSING_CHAIN";
+            Version = "1.0.0";
         }
 
         /// <summary>

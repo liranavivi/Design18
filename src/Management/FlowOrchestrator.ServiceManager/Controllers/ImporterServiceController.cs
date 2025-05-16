@@ -29,11 +29,11 @@ namespace FlowOrchestrator.Management.Services.Controllers
         /// </summary>
         /// <returns>The collection of registered importer services.</returns>
         [HttpGet]
-        public ActionResult<IEnumerable<IImporterService>> GetAll()
+        public async Task<ActionResult<IEnumerable<IImporterService>>> GetAll()
         {
             try
             {
-                var services = _importerServiceManager.GetAllServices();
+                var services = await _importerServiceManager.GetAllServicesAsync();
                 return Ok(services);
             }
             catch (Exception ex)
@@ -49,11 +49,11 @@ namespace FlowOrchestrator.Management.Services.Controllers
         /// <param name="id">The service identifier.</param>
         /// <returns>The importer service if found; otherwise, NotFound.</returns>
         [HttpGet("{id}")]
-        public ActionResult<IImporterService> Get(string id)
+        public async Task<ActionResult<IImporterService>> Get(string id)
         {
             try
             {
-                var service = _importerServiceManager.GetService(id);
+                var service = await _importerServiceManager.GetServiceByIdAsync(id);
                 if (service == null)
                 {
                     return NotFound($"Importer service with ID '{id}' not found");
@@ -74,17 +74,18 @@ namespace FlowOrchestrator.Management.Services.Controllers
         /// <param name="service">The importer service to register.</param>
         /// <returns>The result of the registration.</returns>
         [HttpPost]
-        public ActionResult<ServiceRegistrationResult> Register([FromBody] IImporterService service)
+        public async Task<ActionResult<ServiceRegistrationResult>> Register([FromBody] IImporterService service)
         {
             try
             {
-                var result = _importerServiceManager.RegisterService(service);
-                if (result.Success)
+                var registeredService = await _importerServiceManager.RegisterServiceAsync(service);
+                var result = new ServiceRegistrationResult
                 {
-                    return CreatedAtAction(nameof(Get), new { id = result.ServiceId }, result);
-                }
+                    Success = true,
+                    ServiceId = registeredService.ServiceId
+                };
 
-                return BadRequest(result);
+                return CreatedAtAction(nameof(Get), new { id = result.ServiceId }, result);
             }
             catch (Exception ex)
             {
@@ -99,11 +100,18 @@ namespace FlowOrchestrator.Management.Services.Controllers
         /// <param name="id">The identifier of the service to unregister.</param>
         /// <returns>The result of the unregistration.</returns>
         [HttpDelete("{id}")]
-        public ActionResult<ServiceUnregistrationResult> Unregister(string id)
+        public async Task<ActionResult<ServiceUnregistrationResult>> Unregister(string id)
         {
             try
             {
-                var result = _importerServiceManager.UnregisterService(id);
+                var success = await _importerServiceManager.DeregisterServiceAsync(id);
+                var result = new ServiceUnregistrationResult
+                {
+                    Success = success,
+                    ServiceId = id,
+                    ErrorMessage = success ? null : "Service not found"
+                };
+
                 if (result.Success)
                 {
                     return Ok(result);
